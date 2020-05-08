@@ -7,18 +7,19 @@ document.addEventListener('DOMContentLoaded', function(){
 	// 给谷歌搜索结果的超链接增加 _target="blank"
 	
 	if(location.host == 'sycm.taobao.com'){
-		
+
 		setTimeout(function () {
+
 			let alist = $("#report-detail table tbody a");
+			
 			for(var i=0; i<alist.length; i++){
 				if(alist[i].text == "下载"){
-					console.log(alist[i].href)
-					window.location.href = alist[i].href;
+					alist[i].click();
 				}
 			}
+
 		}, 2000);
 		
-	
 		
 
 		// function fuckBaiduAD()
