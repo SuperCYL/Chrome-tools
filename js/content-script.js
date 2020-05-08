@@ -10,10 +10,9 @@ document.addEventListener('DOMContentLoaded', function(){
 		
 		setTimeout(function () {
 			let alist = $("#report-detail table tbody a");
-			console.log(alist)
 			for(var i=0; i<alist.length; i++){
-				if(alist[i].href){
-					console.log(alist[i].href);
+				if(alist[i].text == "下载"){
+					console.log(alist[i].href)
 					window.location.href = alist[i].href;
 				}
 			}
