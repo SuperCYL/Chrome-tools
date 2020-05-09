@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function(){
 			
 			for(var i=0; i<alist.length; i++){
 				if(alist[i].text == "下载"){
+					let d = new Date().getTime()
+					console.log(d);	
 					alist[i].click();
 				}
 			}
