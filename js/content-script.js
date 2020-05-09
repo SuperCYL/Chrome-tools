@@ -20,6 +20,15 @@ document.addEventListener('DOMContentLoaded', function(){
 				}
 			}
 
+
+			let trList = $("#report-detail table tbody tr");
+			
+			for(var i=0; i<trList.length; i++){
+				console.log($(trList[i].getElementsByTagName("td")[0]).find(".report-name").text());
+				
+			}
+
+
 		}, 2000);
 		
 		
