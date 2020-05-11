@@ -1,12 +1,13 @@
 ﻿console.log('这是content script!');
 
-// 注意，必须设置了run_at=document_start 此段代码才会生效 DOMContentLoaded
-document.addEventListener('DOMContentLoaded', function(){
-	// 注入自定义JS
-	injectCustomJs();
-	// 给谷歌搜索结果的超链接增加 _target="blank"
-	
-	if(location.host == 'sycm.taobao.com'){
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+	if(request.message === "start"){
+		hkEvent();
+	}
+});
+
+function hkEvent(){
+	if(location.href == 'https://sycm.taobao.com/adm/v2/my'){
 
 		setTimeout(function () {
 
@@ -30,6 +31,39 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 		}, 2000);
+	}
+}
+
+// 注意，必须设置了run_at=document_start 此段代码才会生效 DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function(){
+	// 注入自定义JS
+	injectCustomJs();
+	// 给谷歌搜索结果的超链接增加 _target="blank"
+	
+	// if(location.host == 'sycm.taobao.com'){
+
+	// 	setTimeout(function () {
+
+	// 		let alist = $("#report-detail table tbody a");
+			
+	// 		for(var i=0; i<alist.length; i++){
+	// 			if(alist[i].text == "下载"){
+	// 				let d = new Date().getTime()
+	// 				console.log(d);	
+	// 				alist[i].click();
+	// 			}
+	// 		}
+
+
+	// 		let trList = $("#report-detail table tbody tr");
+			
+	// 		for(var i=0; i<trList.length; i++){
+	// 			console.log($(trList[i].getElementsByTagName("td")[0]).find(".report-name").text());
+				
+	// 		}
+
+
+	// 	}, 2000);
 		
 		
 
@@ -69,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function(){
 		// fuckBaiduAD();
 		// initCustomPanel();
 		// initCustomEventListen();
-	}
+	// }
 });
 
 function initCustomPanel()

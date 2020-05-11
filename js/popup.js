@@ -162,6 +162,7 @@ function getCurrentTabId2()
 // 向content-script主动发送消息
 function sendMessageToContentScript(message, callback)
 {
+	debugger;
 	getCurrentTabId((tabId) =>
 	{
 		chrome.tabs.sendMessage(tabId, message, function(response)
@@ -221,6 +222,14 @@ $('#check_media').click(e => {
 	chrome.tabs.create({url: 'http://www.w3school.com.cn/tiy/t.asp?f=html5_video'});
 });
 
-$('#getDownlink').click(e => {
-	
+$('#loginBtn').click(function(){
+	$(".login-modal").hide();
+	$(".main").show();
+})
+
+$('#start').click(function(){
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+        var activeTab = tabs[0];
+        chrome.tabs.sendMessage(activeTab.id, {"message": "start"});
+    });
 })
