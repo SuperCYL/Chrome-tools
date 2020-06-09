@@ -161,7 +161,7 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
 }, {urls: ["<all_urls>"]}, ["blocking"]);
 
 chrome.cookies.getAll({
-	url:'https://www.baidu.com/'
+	url:'https://www.lagou.com/'
 }, function(cookies){
 	console.log(cookies)
 });
