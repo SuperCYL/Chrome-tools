@@ -14,6 +14,13 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function hkEvent(){
+
+	if(location.href.indexOf('https://www.baidu.com/') != -1){
+		
+
+	}
+
+
 	if(location.href.indexOf('https://sycm.taobao.com/adm/v2/my') != -1){
 
 		setTimeout(function () {
