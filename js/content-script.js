@@ -1,71 +1,34 @@
 ﻿console.log('这是content script!');
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-	if(request.message === "start"){
-		hkEvent();
-	}
-});
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+// 	if(request.message === "start"){
+// 		hkEvent();
+// 	}
+// });
 
 // 注意，必须设置了run_at=document_start 此段代码才会生效 DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function(){
 	// 注入自定义JS
-	injectCustomJs();
+	// injectCustomJs();
+	debugger;
 	hkEvent();
 });
 
 function hkEvent(){
+		
 
-	if(location.href.indexOf('https://sycm.taobao.com/adm/v2/my') != -1){
+	chrome.runtime.sendMessage({ type: "lagouindex", method: "getlagouindex"}, function (response) {
+		console.log(response)
+		// var data = JSON.parse(response)
+		debugger;
 
-		setTimeout(function () {
-
-			let alist = $("#report-detail table tbody a");
-			
-			for(var i=0; i<alist.length; i++){
-				if(alist[i].text == "下载"){
-					let d = new Date().getTime()
-					console.log(alist[i]);	
-					alist[i].click();
-				}
-			}
-
-
-			let trList = $("#report-detail table tbody tr");
-			
-			for(var i=0; i<trList.length; i++){
-				console.log($(trList[i].getElementsByTagName("td")[0]).find(".report-name").text());
-				
-			}
-
-
-		}, 2000);
-	}else if(location.href.indexOf("https://sycm.taobao.com/cc/macroscopic_monitor") != -1){
-
-		setTimeout(function () {
-			
-			var href1 = $("#coreIndexMonitor .op-cc-download");
-			console.log("fffffff",href1[0])
-			
-			setTimeout(function () {
-			
-				var href2 = $("#item-rank .op-cc-download");
-				console.log("vvvvvvvvvv",href2[0])
-				
-				let arr = [href1[0],href2[0]];
-				for(var i =0;i<arr.length;i++){
-					arr[i].click();
-				}
-
-			}, 3000);
-
-		}, 2000);
+		window.postMessage(response, '*');
+	});
+	// if(location.href.indexOf('https://easy.lagou.com/can/index.htm') != -1){
 
 		
 
-		
-
-		
-	}
+	// }
 }
 
 

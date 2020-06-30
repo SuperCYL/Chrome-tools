@@ -51,10 +51,48 @@ chrome.contextMenus.create({
 // 监听来自content-script的消息
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
-	console.log('收到来自content-script的消息：');
-	console.log(request, sender, sendResponse);
-	sendResponse('我是后台，我已收到你的消息：' + JSON.stringify(request));
+	if(request.type == "lagouindex"){
+		getCodeAndToken();
+	}
+	
 });
+
+function getCodeAndToken(){
+	var xhr = new XMLHttpRequest();
+	
+	var url = "https://easy.lagou.com/can/index.htm?can=true&stage=NEW&needQueryAmount=true&newDeliverTime=0&subStage=&pageNo=1";
+	xhr.open("get", url, false); //false--同步请求
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	
+	xhr.send();
+
+	var html = xhr.responseText;
+
+	var code = "window.X_Anti_Forge_Code = '(.+)'";
+	var token = "window.X_Anti_Forge_Token = '(.+)'"; 
+	var c = html.match(code)[1];
+	var t = html.match(token)[1];
+	console.log(c,t);
+	getList(c,t)
+}
+
+function getList(c,t){
+	var xhr = new XMLHttpRequest();
+	var url = "https://easy.lagou.com/interview/new/can/list.json";
+	xhr.open("post", url, false); //false--同步请求
+	xhr.setRequestHeader(
+		"Content-Type","application/x-www-form-urlencoded",
+	);
+	xhr.setRequestHeader(
+		"x-anit-forge-code",c,
+	);
+	xhr.setRequestHeader(
+		"x-anit-forge-token",t,
+	);
+	var params = "pageNo=1"+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
+	
+	xhr.send(params);
+}
 
 // $('#test_cors').click((e) => {
 // 	$.get('https://www.baidu.com', function(html){
@@ -151,12 +189,12 @@ chrome.webRequest.onBeforeRequest.addListener(details => {
 	// 简单的音视频检测
 	// 大部分网站视频的type并不是media，且视频做了防下载处理，所以这里仅仅是为了演示效果，无实际意义
 	if(details.type == 'media') {
-		chrome.notifications.create(null, {
-			type: 'basic',
-			iconUrl: 'img/icon.png',
-			title: '检测到音视频',
-			message: '音视频地址：' + details.url,
-		});
+		// chrome.notifications.create(null, {
+		// 	type: 'basic',
+		// 	iconUrl: 'img/icon.png',
+		// 	title: '检测到音视频',
+		// 	message: '音视频地址：' + details.url,
+		// });
 	}
 }, {urls: ["<all_urls>"]}, ["blocking"]);
 
