@@ -5,12 +5,25 @@
 // 		hkEvent();
 // 	}
 // });
+// $("#rs_plu_123").unbind('click').on((e)=>{})
+
+// $("#rs_plu_123").on("click",function(){
+// 	alert("hellworl");
+// });
+// $("#rs_plu_123").click(function(){
+// 	alert(111)
+// })
+window.onload=function(){
+	document.getElementById("res_button_ok").addEventListener('click',function(){
+		alert(111111);
+	})
+};
 
 // 注意，必须设置了run_at=document_start 此段代码才会生效 DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function(){
+
 	// 注入自定义JS
 	// injectCustomJs();
-	debugger;
 	hkEvent();
 });
 
@@ -19,9 +32,6 @@ function hkEvent(){
 
 	chrome.runtime.sendMessage({ type: "lagouindex", method: "getlagouindex"}, function (response) {
 		console.log(response)
-		// var data = JSON.parse(response)
-		debugger;
-
 		window.postMessage(response, '*');
 	});
 	// if(location.href.indexOf('https://easy.lagou.com/can/index.htm') != -1){

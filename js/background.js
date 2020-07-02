@@ -52,7 +52,7 @@ chrome.contextMenus.create({
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
 	if(request.type == "lagouindex"){
-		getCodeAndToken();
+		getList();
 	}
 	
 });
@@ -89,7 +89,7 @@ function getList(c,t){
 	xhr.setRequestHeader(
 		"x-anit-forge-token",t,
 	);
-	var params = "pageNo=1"+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
+	var params = "can="+true+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
 	
 	xhr.send(params);
 }
