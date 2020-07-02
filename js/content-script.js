@@ -1,21 +1,20 @@
 ﻿console.log('这是content script!');
 
-// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-// 	if(request.message === "start"){
-// 		hkEvent();
-// 	}
-// });
-// $("#rs_plu_123").unbind('click').on((e)=>{})
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+	if(request.message === "start"){
+		hkEvent();
+	}
+});
 
-// $("#rs_plu_123").on("click",function(){
-// 	alert("hellworl");
-// });
-// $("#rs_plu_123").click(function(){
-// 	alert(111)
-// })
 window.onload=function(){
 	document.getElementById("res_button_ok").addEventListener('click',function(){
-		alert(111111);
+		console.log($("#wesitetableid table .el-table__row .el-checkbox.is-checked").parents(".el-table-column--selection").siblings("td").find(".cell").text());
+		
+		chrome.runtime.sendMessage({ type: "lagouindex", method: "getlagouindex"}, function (response) {
+			console.log(response)
+			window.postMessage(response, '*');
+		});
+
 	})
 };
 
@@ -24,22 +23,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	// 注入自定义JS
 	// injectCustomJs();
-	hkEvent();
+	
 });
-
-function hkEvent(){
-		
-
-	chrome.runtime.sendMessage({ type: "lagouindex", method: "getlagouindex"}, function (response) {
-		console.log(response)
-		window.postMessage(response, '*');
-	});
-	// if(location.href.indexOf('https://easy.lagou.com/can/index.htm') != -1){
-
-		
-
-	// }
-}
 
 
 function initCustomPanel()
