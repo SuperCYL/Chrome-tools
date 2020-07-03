@@ -73,40 +73,30 @@ function getCodeAndToken(){
 	var t = html.match(token)[1];
 	console.log(c,t);
 	getList(c,t);
-
-	// if(xhr.responseText.startsWith('{')){
-	// 	var html = xhr.responseText;
-	// 	var code = "window.X_Anti_Forge_Code = '(.+)'";
-	// 	var token = "window.X_Anti_Forge_Token = '(.+)'"; 
-	// 	var c = html.match(code)[1];
-	// 	var t = html.match(token)[1];
-	// 	console.log(c,t);
-	// 	getList(c,t)
-	// }else{
-	// 	window.open("https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt","_blank");
-	// }
 	
 }
 
-function getList(c,t){
+function getList(){
 	var xhr = new XMLHttpRequest();
 	var url = "https://easy.lagou.com/interview/new/can/list.json";
 	xhr.open("post", url, false); //false--同步请求
 	xhr.setRequestHeader(
 		"Content-Type","application/x-www-form-urlencoded",
 	);
-	xhr.setRequestHeader(
-		"x-anit-forge-code",c,
-	);
-	xhr.setRequestHeader(
-		"x-anit-forge-token",t,
-	);
+	// xhr.setRequestHeader(
+	// 	"x-anit-forge-code",c,
+	// );
+	// xhr.setRequestHeader(
+	// 	"x-anit-forge-token",t,
+	// );
 	var params = "can="+true+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
 	
 	xhr.send(params);
 
 	if(xhr.responseText.startsWith('{')){ //已登录
-		debugger;
+		// window.remove(chrome.extension.getURL('https://www.lagou.com/'));
+		
+		var data = JSON.parse(xhr.responseText);
 	}else{
 		window.open("https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt","_blank");
 	}
