@@ -1,5 +1,5 @@
 ﻿console.log('进入content script!');
-window.close("https://www.lagou.com/");
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 	if(request.message === "start"){
 		
@@ -7,14 +7,17 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 });
 
 window.onload=function(){
-	if(window.location.href.indexOf("http://192.168.20.44:18000/hrrpa/index.html") !== -1){
-		selfSystem();
+	if(location.href == "http://192.168.20.44:18000/hrrpa/index.html#/analyse"){
+		document.querySelector("#rs_plu_123").addEventListener('click',function(){
+			chrome.runtime.sendMessage('lagouindex', res => {
+				// 答复
+				alert(res)
+			  })
+		})
 	}
 	
-	if(window.location.href.indexOf("https://passport.lagou.com/login/login.html") !== -1){
-		lagou();
-	}
-	
+	// console.log($("#wesitetableid table .el-table__row .el-checkbox.is-checked").parents(".el-table-column--selection").siblings("td").find(".cell").text());
+
 };
 
 // 注意，必须设置了run_at=document_start 此段代码才会生效 DOMContentLoaded
@@ -25,30 +28,6 @@ document.addEventListener('DOMContentLoaded', function(){
 	
 });
 
-function selfSystem(){
-	document.getElementById("res_button_ok").addEventListener('click',function(){
-		window.close("https://www.lagou.com/");
-		console.log($("#wesitetableid table .el-table__row .el-checkbox.is-checked").parents(".el-table-column--selection").siblings("td").find(".cell").text());
-		
-		interFace();
-
-	});
-}
-function lagou(){
-	document.getElementsByClassName("btn_lg")[0].addEventListener('click',function(){
-		interFace();
-	});
-	
-	document.getElementsByClassName("btn_lg")[1].addEventListener('click',function(){
-		interFace();
-	})
-}
-
-function interFace(){
-	chrome.runtime.sendMessage({ type: "lagouindex", method: "getlagouindex"}, function (response) {
-		window.postMessage(response, '*');
-	});
-}
 
 function initCustomPanel()
 {

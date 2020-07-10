@@ -20,8 +20,9 @@ chrome.contextMenus.create({
 	}
 });
 
-
-
+// chrome.tabs.getCurrent(function(tab){
+// 	alert(tab);
+// })
 //-------------------- badge演示 ------------------------//
 /*(function()
 {
@@ -49,14 +50,39 @@ chrome.contextMenus.create({
 })();*/
 
 // 监听来自content-script的消息
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse)
 {
-	if(request.type == "lagouindex"){
-		// getCodeAndToken();
-		getList();
+	if(message == "lagouindex"){
+		var xhr = new XMLHttpRequest();
+		var url = "https://easy.lagou.com/interview/new/can/list.json";
+		xhr.open("post", url, false); //false--同步请求
+		xhr.setRequestHeader(
+			"Content-Type","application/x-www-form-urlencoded",
+		);
+		// xhr.setRequestHeader(
+		// 	"x-anit-forge-code",c,
+		// );
+		// xhr.setRequestHeader(
+		// 	"x-anit-forge-token",t,
+		// );
+		var params = "can="+true+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
+		
+		xhr.send(params);
+
+		if(xhr.responseText.startsWith('{')){ //已登录
+			
+			// window.close("https://www.lagou.com/");
+			var data = JSON.parse(xhr.responseText);
+			sendResponse(data);
+			// getCodeAndToken();
+		}else{
+			// window.open("https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt","_blank");
+			chrome.tabs.create({url: 'https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt'});
+		}
 	}
 	
 });
+
 
 function getCodeAndToken(){
 	var xhr = new XMLHttpRequest();
@@ -72,36 +98,37 @@ function getCodeAndToken(){
 	var c = html.match(code)[1];
 	var t = html.match(token)[1];
 	console.log(c,t);
-	getList(c,t);
+	getNewListData(c,t);
 	
 }
 
-function getList(){
+function getNewListData(c,t){
 	var xhr = new XMLHttpRequest();
-	var url = "https://easy.lagou.com/interview/new/can/list.json";
+	var url = "https://easy.lagou.com/can/new/list.json";
 	xhr.open("post", url, false); //false--同步请求
 	xhr.setRequestHeader(
-		"Content-Type","application/x-www-form-urlencoded",
+		"Content-Type","application/x-www-form-urlencoded; charset=UTF-8",
 	);
-	// xhr.setRequestHeader(
-	// 	"x-anit-forge-code",c,
-	// );
-	// xhr.setRequestHeader(
-	// 	"x-anit-forge-token",t,
-	// );
-	var params = "can="+true+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
+	xhr.setRequestHeader(
+		"x-anit-forge-code",c,
+	);
+	xhr.setRequestHeader(
+		"x-anit-forge-token",t,
+	);
+	xhr.setRequestHeader(
+		"content-length",65,
+	);
+	xhr.setRequestHeader(
+		"x-requested-with",XMLHttpRequest,
+	);
+	xhr.setRequestHeader(
+		"accept","application/json, text/plain, */*",
+	);
+	var params = "needQueryAmount="+true+"&newDeliverTime=0"+"&pageNo=1"
 	
 	xhr.send(params);
-
-	if(xhr.responseText.startsWith('{')){ //已登录
-		// window.remove(chrome.extension.getURL('https://www.lagou.com/'));
-		
-		var data = JSON.parse(xhr.responseText);
-	}else{
-		window.open("https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt","_blank");
-	}
+	console.log(JSON.parse(xhr.responseText))
 }
-
 // $('#test_cors').click((e) => {
 // 	$.get('https://www.baidu.com', function(html){
 // 		console.log( html);
@@ -211,4 +238,13 @@ chrome.cookies.getAll({
 }, function(cookies){
 	console.log(cookies)
 });
-	
+function httpRequest(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            callback(xhr.responseText);
+        }
+    }
+    xhr.send();
+}
