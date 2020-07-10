@@ -59,22 +59,11 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse)
 		xhr.setRequestHeader(
 			"Content-Type","application/x-www-form-urlencoded",
 		);
-		// xhr.setRequestHeader(
-		// 	"x-anit-forge-code",c,
-		// );
-		// xhr.setRequestHeader(
-		// 	"x-anit-forge-token",t,
-		// );
 		var params = "can="+true+"&parentPositionIds="+"&linkMan="+"&candidate"+"&range=5"+"&pageSize=20"
-		
 		xhr.send(params);
-
 		if(xhr.responseText.startsWith('{')){ //已登录
-			
-			// window.close("https://www.lagou.com/");
 			var data = JSON.parse(xhr.responseText);
 			sendResponse(data);
-			// getCodeAndToken();
 		}else{
 			chrome.tabs.create({url: 'https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt'});
 		}
