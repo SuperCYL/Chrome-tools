@@ -76,7 +76,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse)
 			sendResponse(data);
 			// getCodeAndToken();
 		}else{
-			// window.open("https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt","_blank");
 			chrome.tabs.create({url: 'https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt'});
 		}
 	}
