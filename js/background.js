@@ -63,6 +63,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse)
 		xhr.send(params);
 		if(xhr.responseText.startsWith('{')){ //已登录
 			var data = JSON.parse(xhr.responseText);
+			getCodeAndToken();
 			sendResponse(data);
 		}else{
 			chrome.tabs.create({url: 'https://passport.lagou.com/login/login.html?utm_source=m_cf_cpt_baidu_pcbt'});

@@ -19,7 +19,10 @@ window.onload=function(){
 	// console.log($("#wesitetableid table .el-table__row .el-checkbox.is-checked").parents(".el-table-column--selection").siblings("td").find(".cell").text());
 
 };
-
+chrome.runtime.sendMessage('lagouindex', res => {
+	// 答复
+	alert(res)
+  })
 // 注意，必须设置了run_at=document_start 此段代码才会生效 DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function(){
 
